@@ -2,6 +2,7 @@
 Simple graph implementation
 """
 from util import Stack, Queue  # These may come in handy
+import copy
 
 class Graph:
 
@@ -105,19 +106,37 @@ class Graph:
         breath-first order.
         """
         # Create an empty queue
+        q = Queue()
         # Add A PATH TO the starting vertex_id to the queue
+        q.enqueue([starting_vertex])
         # Create an empty set to store visited nodes
+        visited = set()
         # While the queue is not empty...
+        while q.size() > 0:
             # Dequeue, the first PATH
+            path = q.dequeue()
+            print(path)
             # GRAB THE LAST VERTEX FROM THE PATH
+            last_vertex = path[len(path) - 1]
+            # print("last_vertex", last_vertex) 
             # CHECK IF IT'S THE TARGET
+            if last_vertex == destination_vertex:
                 # IF SO, RETURN THE PATH
+                # print("Result", v)
+                return path
             # Check if it's been visited
             # If it has not been visited...
+            if path[len(path) - 1] not in visited:
                 # Mark it as visited
+                visited.add(path[len(path) - 1])
+                # print(visited)
                 # Then add A PATH TO all neighbors to the back of the queue
                     # (Make a copy of the path before adding)
-        pass  # TODO
+                for neighbor in self.get_neighbors(path[len(path) - 1]):
+                     # print("neighbor", neighbor)
+                     path_copy = copy.copy(path)
+                     path_copy.append(neighbor)
+                     q.enqueue(path_copy)
 
     def dfs(self, starting_vertex, destination_vertex):
         """
@@ -162,7 +181,7 @@ if __name__ == '__main__':
     Should print:
         {1: {2}, 2: {3, 4}, 3: {5}, 4: {6, 7}, 5: {3}, 6: {3}, 7: {1, 6}}
     '''
-    print(graph.vertices)
+    # print(graph.vertices)
 
     '''
     Valid BFT paths:
@@ -188,14 +207,14 @@ if __name__ == '__main__':
     #     1, 2, 4, 7, 6, 3, 5
     #     1, 2, 4, 6, 3, 5, 7
     # '''
-    graph.dft(1)
+    # graph.dft(1)
     # graph.dft_recursive(1)
 
     # '''
     # Valid BFS path:
     #     [1, 2, 4, 6]
     # '''
-    # print(graph.bfs(1, 6))
+    print(graph.bfs(1, 6))
 
     # '''
     # Valid DFS paths:
