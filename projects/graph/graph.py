@@ -117,7 +117,7 @@ class Graph:
             path = q.dequeue()
             print(path)
             # GRAB THE LAST VERTEX FROM THE PATH
-            last_vertex = path[len(path) - 1]
+            last_vertex = path[-1]
             # print("last_vertex", last_vertex) 
             # CHECK IF IT'S THE TARGET
             if last_vertex == destination_vertex:
@@ -126,13 +126,13 @@ class Graph:
                 return path
             # Check if it's been visited
             # If it has not been visited...
-            if path[len(path) - 1] not in visited:
+            if path[-1] not in visited:
                 # Mark it as visited
-                visited.add(path[len(path) - 1])
+                visited.add(path[-1])
                 # print(visited)
                 # Then add A PATH TO all neighbors to the back of the queue
                     # (Make a copy of the path before adding)
-                for neighbor in self.get_neighbors(path[len(path) - 1]):
+                for neighbor in self.get_neighbors(path[-1]):
                      # print("neighbor", neighbor)
                      path_copy = copy.copy(path)
                      path_copy.append(neighbor)
@@ -214,7 +214,7 @@ if __name__ == '__main__':
     # Valid BFS path:
     #     [1, 2, 4, 6]
     # '''
-    print(graph.bfs(1, 6))
+    # print(graph.bfs(1, 6))
 
     # '''
     # Valid DFS paths:
