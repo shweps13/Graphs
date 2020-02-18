@@ -49,4 +49,19 @@ Example output
 """
 
 def earliest_ancestor(ancestors, starting_node):
+    ancestorTree = Graph()
+
+    #creating vertices first
+    #if vertex already exist - nothing to do
+    for ancestor in ancestors:
+        for vert in ancestor:
+            ancestorTree.add_vertex(vert)
+    
+    #adding edges to the tree
+    for ancestor in ancestors:
+        ancestorTree.add_edge(ancestor[1], ancestor[0])
+    print(ancestorTree.vertices)
     pass
+
+ancestors = [(1, 3), (2, 3), (3, 6), (5, 6), (5, 7), (4, 5), (4, 8), (8, 9), (11, 8), (10, 1)]
+print(earliest_ancestor(ancestors, 6))
