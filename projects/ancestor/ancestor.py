@@ -60,8 +60,33 @@ def earliest_ancestor(ancestors, starting_node):
     #adding edges to the tree
     for ancestor in ancestors:
         ancestorTree.add_edge(ancestor[1], ancestor[0])
-    print(ancestorTree.vertices)
-    pass
+
+    vertices = ancestorTree.vertices
+    print(vertices)
+
+    #result initial for last vertex in list
+    result = None
+    #lenght of path list
+    biggest_path = 1
+
+    #going thru each vertex in tree
+    for vertex in vertices:
+        #looking for path from starting vertex to iteratable vertex
+        path = ancestorTree.dfs(starting_node, vertex)
+        print(path)
+
+        #as we looking for closer that's mean we need to check path
+        if path is not None and len(path) > biggest_path:
+                biggest_path = len(path)
+                print("biggest_path", biggest_path)
+                # last node is = to last node/vertice of the biggest_path
+                result = vertex
+                print("result", result)
+        elif path is None and biggest_path == 1:
+            result =(-1)
+
+
+    return result
 
 ancestors = [(1, 3), (2, 3), (3, 6), (5, 6), (5, 7), (4, 5), (4, 8), (8, 9), (11, 8), (10, 1)]
 print(earliest_ancestor(ancestors, 6))
