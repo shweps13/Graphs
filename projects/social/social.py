@@ -95,7 +95,7 @@ class SocialGraph:
         while q.size() > 0:
             # Dequeue, the first PATH
             path = q.dequeue()
-            print(path)
+            # print(path)
             # GRAB THE LAST VERTEX FROM THE PATH
             last_user = path[-1]
 
@@ -123,4 +123,5 @@ if __name__ == '__main__':
     # print(sg.users)
     print(sg.friendships)
     connections = sg.get_all_social_paths(2)
+    print(connections)
     # print(connections)
