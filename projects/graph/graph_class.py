@@ -2,7 +2,6 @@
 Simple graph implementation
 """
 from util import Stack, Queue  # These may come in handy
-import copy
 
 class Graph:
 
@@ -84,7 +83,7 @@ class Graph:
                 for neighbor in self.get_neighbors(v):
                     s.push(neighbor)
 
-    def dft_recursive(self, starting_vertex, visited=None, s=Stack()):
+    def dft_recursive(self, starting_vertex, visited=None ):
         """
         Print each vertex in depth-first order
         beginning from starting_vertex.
@@ -92,23 +91,18 @@ class Graph:
         This should be done using recursion.
         """
         # Check if the node is visited
-        # Hint: https://docs.python-guide.org/writing/gotchas/
-        # If not...
-            # Mark it as visited
-            # Print
-            # Call DFT_Recursive on each child
-        
         if visited is None:
             visited = set()
-        print(starting_vertex)
-        # print(s)
-        visited.add(starting_vertex)
-        s.push(starting_vertex)
-        for v in self.vertices[starting_vertex]:
-            if v not in visited:
-                self.dft_recursive(v, visited)
-        return s
-
+        # Hint: https://docs.python-guide.org/writing/gotchas/
+        # If not...
+        if starting_vertex not in visited:
+            # Mark it as visited
+            visited.add(starting_vertex)
+            # Print
+            print(starting_vertex)
+            # Call DFT_Recursive on each neighbor
+            for neighbor in self.get_neighbors(starting_vertex):
+                self.dft_recursive(neighbor, visited)
 
     def bfs(self, starting_vertex, destination_vertex):
         """
@@ -119,35 +113,34 @@ class Graph:
         # Create an empty queue
         q = Queue()
         # Add A PATH TO the starting vertex_id to the queue
-        q.enqueue([starting_vertex])
+        q.enqueue( [starting_vertex] )
         # Create an empty set to store visited nodes
         visited = set()
         # While the queue is not empty...
+        counter = 0
         while q.size() > 0:
+            counter += 1
+            print(counter)
             # Dequeue, the first PATH
             path = q.dequeue()
-            print(path)
             # GRAB THE LAST VERTEX FROM THE PATH
-            last_vertex = path[-1]
-            # print("last_vertex", last_vertex) 
+            v = path[-1]
             # CHECK IF IT'S THE TARGET
-            if last_vertex == destination_vertex:
+            if v == destination_vertex:
                 # IF SO, RETURN THE PATH
-                # print("Result", v)
                 return path
             # Check if it's been visited
             # If it has not been visited...
-            if path[-1] not in visited:
+            if v not in visited:
                 # Mark it as visited
-                visited.add(path[-1])
-                # print(visited)
+                visited.add(v)
                 # Then add A PATH TO all neighbors to the back of the queue
+                for neighbor in self.get_neighbors(v):
                     # (Make a copy of the path before adding)
-                for neighbor in self.get_neighbors(path[-1]):
-                     # print("neighbor", neighbor)
-                     path_copy = copy.copy(path)
-                     path_copy.append(neighbor)
-                     q.enqueue(path_copy)
+                    path_copy = path.copy()
+                    path_copy.append(neighbor)
+                    q.enqueue(path_copy)
+
 
     def dfs(self, starting_vertex, destination_vertex):
         """
@@ -157,35 +150,34 @@ class Graph:
         """
         # Create an empty stack
         s = Stack()
-        # Push A PATH TO the starting vertex_id to the stack
-        s.push([starting_vertex])
+        # Add A PATH TO the starting vertex_id to the stack
+        s.push( [starting_vertex] )
         # Create an empty set to store visited nodes
         visited = set()
         # While the stack is not empty...
+        counter = 0
         while s.size() > 0:
+            counter += 1
+            print(counter)
             # Pop, the first PATH
             path = s.pop()
-            print(path)
             # GRAB THE LAST VERTEX FROM THE PATH
-            last_vertex = path[-1]
+            v = path[-1]
             # CHECK IF IT'S THE TARGET
+            if v == destination_vertex:
                 # IF SO, RETURN THE PATH
-            if last_vertex == destination_vertex:
-                # print("Result", v)
                 return path
             # Check if it's been visited
             # If it has not been visited...
-            if path[-1] not in visited:
+            if v not in visited:
                 # Mark it as visited
-                visited.add(path[-1])
-                # print(visited)
-                # Then push A PATH TO all neighbors to the back of the stack
+                visited.add(v)
+                # Then add A PATH TO all neighbors to the top of the stack
+                for neighbor in self.get_neighbors(v):
                     # (Make a copy of the path before adding)
-                for neighbor in self.get_neighbors(path[-1]):
-                     # print("neighbor", neighbor)
-                     path_copy = copy.copy(path)
-                     path_copy.append(neighbor)
-                     s.push(path_copy)
+                    path_copy = path.copy()
+                    path_copy.append(neighbor)
+                    s.push(path_copy)
 
     def dfs_recursive(self, starting_vertex, destination_vertex, visited=None, path=None):
         """
@@ -195,20 +187,28 @@ class Graph:
 
         This should be done using recursion.
         """
+        # initialize visited if it's not yet initialized
         if visited is None:
             visited = set()
+        # initialize path if it's not yet initialized
         if path is None:
-            path=[]
-        visited.add(starting_vertex)
-        path = path + [starting_vertex]
-        if starting_vertex == destination_vertex:
-            return path
-        for v in self.vertices[starting_vertex]:
-            if v not in visited:
-                new_path = self.dfs_recursive(v, destination_vertex, visited, path)
-                if new_path:
+            path = []
+        # Check if starting vertex has been visited
+        # If not...
+        if starting_vertex not in visited:
+            # Mark it as visited, add it to the path
+            visited.add(starting_vertex)
+            path_copy = path.copy()
+            path_copy.append(starting_vertex)
+            # If starting_vertex is destination:
+            if starting_vertex == destination_vertex:
+                return path_copy
+            # Call DFS recursive on each neighbor
+            for neighbor in self.get_neighbors(starting_vertex):
+                new_path = self.dfs_recursive(neighbor, destination_vertex, visited, path_copy)
+                if new_path is not None:
                     return new_path
-        return 
+
 
 if __name__ == '__main__':
     graph = Graph()  # Instantiate your graph
@@ -220,22 +220,22 @@ if __name__ == '__main__':
     graph.add_vertex(5)
     graph.add_vertex(6)
     graph.add_vertex(7)
+    graph.add_edge(7, 6)
+    graph.add_edge(4, 6)
     graph.add_edge(5, 3)
     graph.add_edge(6, 3)
     graph.add_edge(7, 1)
     graph.add_edge(4, 7)
     graph.add_edge(1, 2)
-    graph.add_edge(7, 6)
     graph.add_edge(2, 4)
     graph.add_edge(3, 5)
     graph.add_edge(2, 3)
-    graph.add_edge(4, 6)
 
     '''
     Should print:
         {1: {2}, 2: {3, 4}, 3: {5}, 4: {6, 7}, 5: {3}, 6: {3}, 7: {1, 6}}
     '''
-    # print(graph.vertices)
+    print(graph.vertices)
 
     '''
     Valid BFT paths:
@@ -262,7 +262,7 @@ if __name__ == '__main__':
     #     1, 2, 4, 6, 3, 5, 7
     # '''
     # graph.dft(1)
-    # print(graph.dft_recursive(1))
+    # graph.dft_recursive(1)
 
     # '''
     # Valid BFS path:
@@ -276,4 +276,6 @@ if __name__ == '__main__':
     #     [1, 2, 4, 7, 6]
     # '''
     # print(graph.dfs(1, 6))
+    print(graph.dfs_recursive(1, 6))
+    print("------")
     print(graph.dfs_recursive(1, 6))

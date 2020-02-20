@@ -1,6 +1,12 @@
+import random
+from util import Queue
+import copy
+
 class User:
     def __init__(self, name):
         self.name = name
+    def __repr__(self):
+        return self.name
 
 class SocialGraph:
     def __init__(self):
@@ -45,8 +51,31 @@ class SocialGraph:
         # !!!! IMPLEMENT ME
 
         # Add users
+        for i in range(num_users):
+            self.add_user(f"User {i+1}")
 
         # Create friendships
+        # create a list with all possible friendships
+        possible_friendships = []
+        for user_id in self.users:
+            for friend_id in range(user_id + 1, self.last_id + 1):
+                possible_friendships.append((user_id, friend_id))
+
+
+        # Shuffle the list
+        random.shuffle(possible_friendships)
+        # print("----")
+        # print(possible_friendships)
+        # print("----")
+        # Grab the first N pairs from the list and create those friendships
+        for i in range(num_users * avg_friendships // 2):
+            friendship = possible_friendships[i]
+            self.add_friendship(friendship[0], friendship[1])
+
+        # avg_friendships = total_friendships / num_users
+        # total_friendships = avg_friendships * num_users
+        # N = avg_friendships * num_users // 2
+
 
     def get_all_social_paths(self, user_id):
         """
@@ -58,13 +87,41 @@ class SocialGraph:
         The key is the friend's ID and the value is the path.
         """
         visited = {}  # Note that this is a dictionary, not a set
-        # !!!! IMPLEMENT ME
+        q = Queue()
+        
+        print("user_id is:", user_id)
+        q.enqueue([user_id])
+
+        while q.size() > 0:
+            # Dequeue, the first PATH
+            path = q.dequeue()
+            # print(path)
+            # GRAB THE LAST VERTEX FROM THE PATH
+            last_user = path[-1]
+
+            if last_user not in visited:
+                # add to the DICTIONARY
+                visited[last_user] = path
+                # print("visited:", visited)
+
+                if user_id not in self.friendships:
+                    # if user_id not in friends dict => return visited dict
+                    return visited
+                
+                else:
+                    for friend in self.friendships[last_user]:
+                        path_copy = copy.copy(path)
+                        path_copy.append(friend)
+                        q.enqueue(path_copy)
+
         return visited
 
 
 if __name__ == '__main__':
     sg = SocialGraph()
     sg.populate_graph(10, 2)
+    # print(sg.users)
     print(sg.friendships)
-    connections = sg.get_all_social_paths(1)
+    connections = sg.get_all_social_paths(2)
     print(connections)
+    # print(connections)
