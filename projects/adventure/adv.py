@@ -1,19 +1,20 @@
 from room import Room
 from player import Player
 from world import World
+from util import Queue, Stack
 
 import random
+import copy
 from ast import literal_eval
 
 # Load world
 world = World()
 
-
 # You may uncomment the smaller graphs for development and testing purposes.
-# map_file = "maps/test_line.txt"
+map_file = "maps/test_line.txt"
 # map_file = "maps/test_cross.txt"
 # map_file = "maps/test_loop.txt"
-map_file = "maps/test_loop_fork.txt"
+# map_file = "maps/test_loop_fork.txt"
 # map_file = "maps/main_maze.txt"
 
 # Loads the map into a dictionary
@@ -24,13 +25,49 @@ world.load_graph(room_graph)
 world.print_rooms()
 
 player = Player(world.starting_room)
+print("\nStarting room is: ", world.starting_room)
+print("-------------------\n")
 
 # Fill this out with directions to walk
 # traversal_path = ['n', 'n']
 traversal_path = []
 
+def bfs(self, starting_vertex, destination_vertex):
+    # Create an empty queue
+    q = Queue()
+    # Add A PATH TO the starting vertex_id to the queue
+    q.enqueue([starting_vertex])
+    # Create an empty set to store visited nodes
+    visited = set()
+    # While the queue is not empty...
+    while q.size() > 0:
+        # Dequeue, the first PATH
+        path = q.dequeue()
+        print(path)
+        # GRAB THE LAST VERTEX FROM THE PATH
+        last_vertex = path[-1]
+        # print("last_vertex", last_vertex) 
+        # CHECK IF IT'S THE TARGET
+        if last_vertex == destination_vertex:
+            # IF SO, RETURN THE PATH
+            # print("Result", v)
+            return path
+        # Check if it's been visited
+        # If it has not been visited...
+        if path[-1] not in visited:
+            # Mark it as visited
+            visited.add(path[-1])
+            # print(visited)
+            # Then add A PATH TO all neighbors to the back of the queue
+                # (Make a copy of the path before adding)
+            for neighbor in self.get_neighbors(path[-1]):
+                    # print("neighbor", neighbor)
+                    path_copy = copy.copy(path)
+                    path_copy.append(neighbor)
+                    q.enqueue(path_copy)
 
 
+# =====================================
 # TRAVERSAL TEST
 visited_rooms = set()
 player.current_room = world.starting_room
@@ -51,12 +88,12 @@ else:
 #######
 # UNCOMMENT TO WALK AROUND
 #######
-player.current_room.print_room_description(player)
-while True:
-    cmds = input("-> ").lower().split(" ")
-    if cmds[0] in ["n", "s", "e", "w"]:
-        player.travel(cmds[0], True)
-    elif cmds[0] == "q":
-        break
-    else:
-        print("I did not understand that command.")
+# player.current_room.print_room_description(player)
+# while True:
+#     cmds = input("-> ").lower().split(" ")
+#     if cmds[0] in ["n", "s", "e", "w"]:
+#         player.travel(cmds[0], True)
+#     elif cmds[0] == "q":
+#         break
+#     else:
+#         print("I did not understand that command.")
