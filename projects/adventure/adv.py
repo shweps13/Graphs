@@ -106,6 +106,38 @@ def search(starting_room):
 
         else:
             break
+        
+        # need to see if a room connected
+        possible_exits = []
+        print("room dictionary", room_dict)
+
+        # iteration thru room dictionary
+        for direction in room_dict:
+            print("direction in room", room_dict[direction])
+
+            if room_dict[direction] == "?":
+                possible_exits.append(direction)
+                print("possible exit :", room_dict[direction])
+        
+        # can we move to room?
+        # if there undiscovered room:
+        if len(possible_exits) > 0:
+            print("we can move to the next room\n")
+            print("next possible direction :", possible_exits[0])
+            
+            direction = possible_exits[0]
+            # move player to direction
+            player.travel(direction)
+            print("we moved to ", direction)
+            print("current room", room_id)
+        else:
+            # use bfs for next exit
+            pass
+
+            
+
+        
+
 
 print("Search Function: ", search(room_graph))
 print("-------------------")
