@@ -47,7 +47,7 @@ to south point [5]:
 }
 """
 
-def bfs(self, starting_room):
+def bfs(starting_room):
     # Create an empty queue
     q = Queue()
     # Add A PATH TO the starting vertex_id to the queue
@@ -62,16 +62,36 @@ def bfs(self, starting_room):
         # GRAB THE LAST VERTEX FROM THE PATH
         current_room = path[-1]
         # print("current_room", current_room) 
-        # Check if it's been visited
+        visited.add(current_room)
         # If it has not been visited...
-        if path[-1] not in visited:
-            # Mark it as visited
-            visited[current_room] = path
+        # if path[-1] not in visited:
+        #     # Mark it as visited
+        #     visited[current_room] = path
             # print(visited)
             # Then add A PATH TO all neighbors to the back of the queue
                 # (Make a copy of the path before adding)
-            for local_path in local_graph[current_room]:
-                    print("local path", local_graph[current_room])
+        for direction in local_graph[current_room]:
+            print("local path", local_graph[current_room])
+            if local_graph[current_room][direction] == "?":
+                # return available paths
+                return path
+            elif local_graph[current_room][direction] not in visited:
+                # create new path to append direction
+                new_path = list(path)
+                new_path.append(local_graph[current_room][direction])
+                q.enqueue(new_path)
+                print("append direction: ", new_path)
+
+
+# Player doing [dft]:
+    # search for directions
+    # evaluate for and "?"
+    # if there are exits with "?"
+    # keep track of them
+    # randomly pick
+    # move there
+    # log to traversal
+
 
 def search(starting_room):
     print("===Beginning of search===\n")
@@ -122,17 +142,23 @@ def search(starting_room):
         # can we move to room?
         # if there undiscovered room:
         if len(possible_exits) > 0:
-            print("we can move to the next room\n")
             print("next possible direction :", possible_exits[0])
+            room_direction = current_room.get_room_in_direction(direction)
+            print('room direction', room_direction)
             
+            random.shuffle(possible_exits)
+            print("next possible direction", possible_exits[0])
+
             direction = possible_exits[0]
             # move player to direction
             player.travel(direction)
             print("we moved to ", direction)
             print("current room", room_id)
+            
+            # log the direction
+            traversal_path.append(direction)
         else:
-            # use bfs for next exit
-            pass
+            next_room = bfs(room_id)
 
             
 
