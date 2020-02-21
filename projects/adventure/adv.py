@@ -132,7 +132,7 @@ def search(starting_room):
         
         # need to see if a room connected
         possible_exits = []
-        print("room dictionary", room_dict)
+        # print("room dictionary", room_dict)
 
         # iteration thru room dictionary
         for direction in room_dict:
@@ -170,10 +170,11 @@ def search(starting_room):
                 exits = player.current_room.get_exits()
                 print("exit to", exits[0])
 
-                # log to traversal path
-                traversal_path.append(exits[0])
+            # log to traversal path
+            traversal_path.append(exits[0])
         else:
             next_room = bfs(room_id)
+            print("using bfs for next room",next_room)
 
             
 
