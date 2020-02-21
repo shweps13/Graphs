@@ -31,21 +31,7 @@ print("-------------------\n")
 # Fill this out with directions to walk
 # traversal_path = ['n', 'n']
 traversal_path = []
-traversal_dict = {}
 local_graph = {}
-
-"""
-From start room [0]:
-{
-  0: {'n': '?', 's': '?', 'w': '?', 'e': '?'}
-}
-
-to south point [5]:
-{
-  0: {'n': '?', 's': 5, 'w': '?', 'e': '?'},
-  5: {'n': 0, 's': '?', 'e': '?'}
-}
-"""
 
 def bfs(starting_room):
     # Create an empty queue
@@ -64,12 +50,7 @@ def bfs(starting_room):
         # print("current_room", current_room) 
         visited.add(current_room)
         # If it has not been visited...
-        # if path[-1] not in visited:
-        #     # Mark it as visited
-        #     visited[current_room] = path
-            # print(visited)
-            # Then add A PATH TO all neighbors to the back of the queue
-                # (Make a copy of the path before adding)
+
         for direction in local_graph[current_room]:
             print("local path", local_graph[current_room])
             if local_graph[current_room][direction] == "?":
@@ -81,16 +62,6 @@ def bfs(starting_room):
                 new_path.append(local_graph[current_room][direction])
                 q.enqueue(new_path)
                 print("append direction: ", new_path)
-
-
-# Player doing [dft]:
-    # search for directions
-    # evaluate for and "?"
-    # if there are exits with "?"
-    # keep track of them
-    # randomly pick
-    # move there
-    # log to traversal
 
 
 def search(starting_room):
@@ -161,27 +132,10 @@ def search(starting_room):
             traversal_path.append(direction)
             # print('traversal path', traversal_path)
 
-            # player movement
-            # player.travel(direction)
-            # print("we moved to ", direction)
-            # print("current room", room_id)
-
-            # for movement in traversal_path:
-            #     player.travel(movement)
-            #     print("movement ['", movement, "']")
-            #     movement = player.current_room
-            #     print("current room:", movement.id)
-            #     print("possible to go:", player.current_room.get_exits())
-            #     exits = player.current_room.get_exits()
-            #     print("exit to", exits[0])
-
-            # # log to traversal path
-            # traversal_path.append(exits[0])
-
             # move player to direction
             player.travel(direction)
 
-            # replace "?" in local_graph with discovered rroms
+            # replace "?" in local_graph with discovered rooms
             movement = player.current_room
             # print("room", local_graph[current_room.id][direction])
             local_graph[current_room.id][direction] = movement.id
@@ -199,7 +153,7 @@ def search(starting_room):
             if next_room is not None and len(next_room) > 0:
                 # print("===Testtestestest===")
                 
-                # iterate length of the room to give access ro room id
+                # iterate length of the room to give access to room id
                 for i in range(len(next_room) -1):
                     # print("map check at: ", local_graph[next_room[i]])
 
