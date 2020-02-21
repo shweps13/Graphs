@@ -32,6 +32,8 @@ print("-------------------\n")
 # traversal_path = ['n', 'n']
 traversal_path = []
 traversal_dict = {}
+local_graph = {}
+
 """
 From start room [0]:
 {
@@ -45,41 +47,32 @@ to south point [5]:
 }
 """
 
-# def bfs(self, starting_room, destination_room):
-#     # Create an empty queue
-#     q = Queue()
-#     # Add A PATH TO the starting vertex_id to the queue
-#     q.enqueue([starting_room])
-#     # Create an empty set to store visited nodes
-#     visited = set()
-#     # While the queue is not empty...
-#     while q.size() > 0:
-#         # Dequeue, the first PATH
-#         path = q.dequeue()
-#         # print(path)
-#         # GRAB THE LAST VERTEX FROM THE PATH
-#         last_vertex = path[-1]
-#         # print("last_vertex", last_vertex) 
-#         # CHECK IF IT'S THE TARGET
-#         if last_vertex == destination_room:
-#             # IF SO, RETURN THE PATH
-#             # print("Result", v)
-#             return path
-#         # Check if it's been visited
-#         # If it has not been visited...
-#         if path[-1] not in visited:
-#             # Mark it as visited
-#             visited.add(path[-1])
-#             # print(visited)
-#             # Then add A PATH TO all neighbors to the back of the queue
-#                 # (Make a copy of the path before adding)
-#             for neighbor in self.get_neighbors(path[-1]):
-#                     # print("neighbor", neighbor)
-#                     path_copy = copy.copy(path)
-#                     path_copy.append(neighbor)
-#                     q.enqueue(path_copy)
+def bfs(self, starting_room):
+    # Create an empty queue
+    q = Queue()
+    # Add A PATH TO the starting vertex_id to the queue
+    q.enqueue([starting_room])
+    # Create an empty set to store visited nodes
+    visited = set()
+    # While the queue is not empty...
+    while q.size() > 0:
+        # Dequeue, the first PATH
+        path = q.dequeue()
+        # print(path)
+        # GRAB THE LAST VERTEX FROM THE PATH
+        current_room = path[-1]
+        # print("current_room", current_room) 
+        # Check if it's been visited
+        # If it has not been visited...
+        if path[-1] not in visited:
+            # Mark it as visited
+            visited[current_room] = path
+            # print(visited)
+            # Then add A PATH TO all neighbors to the back of the queue
+                # (Make a copy of the path before adding)
+            for local_path in local_graph[current_room]:
+                    print("local path", local_graph[current_room])
 
-local_graph = {}
 def search(starting_room):
     print("===Beginning of search===\n")
     # Where player now
