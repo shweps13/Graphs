@@ -101,7 +101,7 @@ def search(starting_room):
             # Find possible exits
 
             for i in current_room.get_exits():
-                room_dict = '?'
+                room_dict[i] = '?'
                 # print("room dictionary", room_dict) 
 
             if traversal_path:
@@ -113,9 +113,6 @@ def search(starting_room):
 
         else:
             break
-            # print("Room dictionary",room_dict)
-
-
 
 print("Search Function: ", search(room_graph))
 print("-------------------")
