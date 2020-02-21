@@ -142,21 +142,24 @@ def search(starting_room):
         # can we move to room?
         # if there undiscovered room:
         if len(possible_exits) > 0:
-            print("next possible direction :", possible_exits[0])
-            room_direction = current_room.get_room_in_direction(direction)
-            print('room direction', room_direction)
+            # print("next possible direction :", possible_exits[0])
+            # room_direction = current_room.get_room_in_direction(direction)
+            # print('room direction', room_direction)
             
             random.shuffle(possible_exits)
             print("next possible direction", possible_exits[0])
 
             direction = possible_exits[0]
             # move player to direction
-            player.travel(direction)
-            print("we moved to ", direction)
-            print("current room", room_id)
             
             # log the direction
             traversal_path.append(direction)
+            print('traversal path', traversal_path)
+
+            # player movement
+            player.travel(direction)
+            print("we moved to ", direction)
+            print("current room", room_id)
         else:
             next_room = bfs(room_id)
 
