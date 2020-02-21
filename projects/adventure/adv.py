@@ -135,11 +135,11 @@ def search(starting_room):
 
         # iteration thru room dictionary
         for direction in room_dict:
-            print("direction in room", room_dict[direction])
+            # print("direction in room", room_dict[direction])
 
             if room_dict[direction] == "?":
                 possible_exits.append(direction)
-                print("possible exit :", room_dict[direction])
+                # print("possible exit :", room_dict[direction])
         
         # can we move to room?
         # if there undiscovered room:
@@ -165,6 +165,7 @@ def search(starting_room):
                 print("movement ['", movement, "']")
                 movement = player.current_room
                 print("current room:", movement.id)
+                print("possible to go:", player.current_room.get_exits())
                 # print("new room", player.current_room.connect_rooms(direction, movement.id))
         else:
             next_room = bfs(room_id)
@@ -174,7 +175,7 @@ def search(starting_room):
         
 
 
-print("Search Function: ", search(room_graph))
+print("\nSearch Function: ", search(room_graph))
 print("-------------------")
 print("Local graph: ", local_graph)
 print("-------------------")
