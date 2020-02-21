@@ -125,6 +125,7 @@ def search(starting_room):
 
             # add unexplored room to the room id
             local_graph[room_id] = room_dict
+            print("Local graph: ", local_graph[room_id])
 
         else:
             break
@@ -143,7 +144,7 @@ def search(starting_room):
         
         # can we move to room?
         # if there undiscovered room:
-        if len(possible_exits) > 0:
+        if len(possible_exits) != 0:
             
             random.shuffle(possible_exits)
             print("next possible direction to go ===>", possible_exits[0])
@@ -166,7 +167,11 @@ def search(starting_room):
                 movement = player.current_room
                 print("current room:", movement.id)
                 print("possible to go:", player.current_room.get_exits())
-                # print("new room", player.current_room.connect_rooms(direction, movement.id))
+                exits = player.current_room.get_exits()
+                print("exit to", exits[0])
+
+                # log to traversal path
+                traversal_path.append(exits[0])
         else:
             next_room = bfs(room_id)
 
